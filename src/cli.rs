@@ -41,7 +41,7 @@ pub enum EnigmaCommands {
         detail: bool,
     },
     Default {
-        #[arg(value_name = "FOLDER")]
+        #[arg(value_name = "FOLDER", default_value = "./config/")]
         folder: PathBuf,
     },
 }
