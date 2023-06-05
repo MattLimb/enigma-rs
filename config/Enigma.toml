@@ -1,0 +1,10 @@
+rotors = [
+    "rotor_i",
+    "rotor_ii",
+    "rotor_iii"
+]
+
+[plugboard]
+a = "h"
+b = "n"
+c = "o"
