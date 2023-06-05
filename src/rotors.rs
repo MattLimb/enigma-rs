@@ -1,10 +1,9 @@
+use crate::enigma::EnigmaTrait;
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, VecDeque};
 use std::fs;
 use std::path::PathBuf;
 use std::process::exit;
-use crate::enigma::EnigmaTrait;
-
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RotorsConfig(pub HashMap<String, Rotor>);

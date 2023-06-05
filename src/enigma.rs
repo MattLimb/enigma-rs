@@ -10,7 +10,6 @@ pub trait EnigmaTrait {
     fn mutate(&mut self, input_char: char, backwards: bool) -> char;
 }
 
-
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EnigmaMachine {
     pub rotors: [String; 3],
