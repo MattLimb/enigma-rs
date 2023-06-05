@@ -36,6 +36,24 @@ impl RotorsConfig {
             }
         }
     }
+
+    pub fn dump(self, path: PathBuf) {
+        let string_content = match toml::to_string_pretty(&self) {
+            Ok(content) => content,
+            Err(error) => {
+                println!("ERROR: {:?}", error.to_string());
+                exit(1)
+            }
+        };
+
+        match fs::write(path, string_content) {
+            Ok(_) => (),
+            Err(error) => {
+                println!("ERROR: {:?}", error.to_string());
+                exit(1)
+            }
+        }
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

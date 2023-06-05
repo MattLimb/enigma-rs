@@ -1,4 +1,5 @@
 mod cli;
+mod defaults;
 mod enigma;
 mod rotors;
 
@@ -56,6 +57,14 @@ fn list_rotors(rotors: PathBuf, config: PathBuf, detail: bool) {
     }
 }
 
+fn write_defaults(folder: PathBuf) {
+    defaults::write_default_rotors(folder.clone());
+    println!("Written Rotors.toml");
+
+    defaults::write_default_enigma(folder);
+    println!("Written Enigma.toml");
+}
+
 fn main() {
     let cli_args: EnigmaCli = EnigmaCli::parse();
 
@@ -67,5 +76,6 @@ fn main() {
             encrypt(input_string.into_inner(), cli_args.rotors, cli_args.config)
         }
         EnigmaCommands::Rotors { detail } => list_rotors(cli_args.rotors, cli_args.config, detail),
+        EnigmaCommands::Default { folder } => write_defaults(folder),
     }
 }

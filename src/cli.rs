@@ -40,4 +40,8 @@ pub enum EnigmaCommands {
         #[arg(short, long)]
         detail: bool,
     },
+    Default {
+        #[arg(value_name = "FOLDER")]
+        folder: PathBuf,
+    },
 }

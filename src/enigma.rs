@@ -13,20 +13,20 @@ pub trait EnigmaTrait {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EnigmaMachine {
     pub rotors: Vec<String>,
-    plugboard: EnigmaPlugboard,
+    pub plugboard: EnigmaPlugboard,
 
     #[serde(default)]
-    offset: HashMap<String, u8>,
+    pub offset: HashMap<String, u8>,
 
     // Right (0) - Middle (1) - Left (2) - Reflector (3)
     #[serde(skip, default)]
-    rotor_slots: Vec<Rotor>,
+    pub rotor_slots: Vec<Rotor>,
 
     #[serde(skip, default = "Rotor::get_reflector")]
-    reflector: Rotor,
+    pub reflector: Rotor,
 
-    #[serde(default)]
-    rotated: Vec<u8>,
+    #[serde(skip, default)]
+    pub rotated: Vec<u8>,
 }
 
 impl EnigmaTrait for EnigmaMachine {
@@ -96,6 +96,24 @@ impl EnigmaMachine {
         }
     }
 
+    pub fn dump(self, path: PathBuf) {
+        let string_content = match toml::to_string_pretty(&self) {
+            Ok(content) => content,
+            Err(error) => {
+                println!("ERROR: {:?}", error.to_string());
+                exit(1)
+            }
+        };
+
+        match fs::write(path, string_content) {
+            Ok(_) => (),
+            Err(error) => {
+                println!("ERROR: {:?}", error.to_string());
+                exit(1)
+            }
+        }
+    }
+
     pub fn rotate(&mut self) {
         for (idx, rotor) in self.rotor_slots.iter_mut().enumerate() {
             rotor.rotate();
@@ -110,7 +128,7 @@ impl EnigmaMachine {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct EnigmaPlugboard(HashMap<char, char>);
+pub struct EnigmaPlugboard(pub HashMap<char, char>);
 
 impl EnigmaPlugboard {
     pub fn init(&mut self) {
