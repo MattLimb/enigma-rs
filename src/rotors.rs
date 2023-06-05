@@ -1,15 +1,16 @@
+use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, VecDeque};
-use std::path::PathBuf;
 use std::fs;
+use std::path::PathBuf;
 use std::process::exit;
-use serde::{Serialize, Deserialize};
-use crate::config::EnigmaTrait;
+use crate::enigma::EnigmaTrait;
+
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RotorsConfig(pub HashMap<String, Rotor>);
 
 impl RotorsConfig {
-    pub fn get_rotor(self, name: &String) -> Rotor{
+    pub fn get_rotor(self, name: &String) -> Rotor {
         match self.0.get(name) {
             Some(rtr) => rtr.clone(),
             None => {
@@ -38,11 +39,10 @@ impl RotorsConfig {
     }
 }
 
-
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Rotor {
     pub input: [char; 26],
-    pub output: VecDeque<char>
+    pub output: VecDeque<char>,
 }
 
 impl Rotor {
@@ -60,12 +60,15 @@ impl Rotor {
     }
 
     pub fn get_reflector() -> Self {
-        Self { 
+        Self {
             input: [
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-            ], output: VecDeque::from([
-                'e', 'j', 'm', 'z', 'a', 'l', 'y', 'x', 'v', 'b', 'w', 'f', 'c', 'r', 'q', 'u', 'o', 'n', 't', 's', 'p', 'i', 'k', 'h', 'g', 'd'
-            ])
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            ],
+            output: VecDeque::from([
+                'e', 'j', 'm', 'z', 'a', 'l', 'y', 'x', 'v', 'b', 'w', 'f', 'c', 'r', 'q', 'u',
+                'o', 'n', 't', 's', 'p', 'i', 'k', 'h', 'g', 'd',
+            ]),
         }
     }
 }
@@ -75,12 +78,12 @@ impl EnigmaTrait for Rotor {
         if backwards {
             match self.output.iter().position(|&r| r == input_char) {
                 Some(idx) => self.input[idx],
-                None => input_char
+                None => input_char,
             }
         } else {
             match self.input.iter().position(|&r| r == input_char) {
                 Some(idx) => self.output[idx],
-                None => input_char
+                None => input_char,
             }
         }
     }

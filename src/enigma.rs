@@ -1,11 +1,14 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 use std::process::exit;
-use serde::{Serialize, Deserialize};
 
-use crate::config::rotors::{Rotor, RotorsConfig};
-use crate::config::EnigmaTrait;
+use crate::rotors::{Rotor, RotorsConfig};
+
+pub trait EnigmaTrait {
+    fn mutate(&mut self, input_char: char, backwards: bool) -> char;
+}
 
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -13,7 +16,7 @@ pub struct EnigmaMachine {
     pub rotors: [String; 3],
     plugboard: EnigmaPlugboard,
 
-    // Right (0) - Middle (1) - Left (2) - Reflector (3) 
+    // Right (0) - Middle (1) - Left (2) - Reflector (3)
     #[serde(skip, default)]
     rotor_slots: Vec<Rotor>,
 
@@ -22,7 +25,7 @@ pub struct EnigmaMachine {
     #[serde(default)]
     middle_rotated: i8,
     #[serde(default)]
-    right_rotated: i8
+    right_rotated: i8,
 }
 
 impl EnigmaTrait for EnigmaMachine {
@@ -55,10 +58,10 @@ impl EnigmaTrait for EnigmaMachine {
 impl EnigmaMachine {
     pub fn init(&mut self, all_rotors: RotorsConfig) {
         self.rotor_slots = vec![
-            all_rotors.clone().get_rotor(&self.rotors[0]).clone(),
-            all_rotors.clone().get_rotor(&self.rotors[1]).clone(),
-            all_rotors.get_rotor(&self.rotors[2]).clone(),
-            Rotor::get_reflector()
+            all_rotors.clone().get_rotor(&self.rotors[0]),
+            all_rotors.clone().get_rotor(&self.rotors[1]),
+            all_rotors.get_rotor(&self.rotors[2]),
+            Rotor::get_reflector(),
         ];
 
         self.plugboard.init();
@@ -103,8 +106,6 @@ impl EnigmaMachine {
     fn rotate_left(&mut self) {
         self.rotor_slots[1].rotate();
         self.left_rotated += 1;
-
-
     }
 
     pub fn rotate(&mut self) {
@@ -118,7 +119,7 @@ pub struct EnigmaPlugboard(HashMap<char, char>);
 impl EnigmaPlugboard {
     pub fn init(&mut self) {
         for (key, value) in self.0.clone().iter() {
-            self.0.insert(value.clone(), key.clone());
+            self.0.insert(*value, *key);
         }
     }
 }
@@ -126,8 +127,8 @@ impl EnigmaPlugboard {
 impl EnigmaTrait for EnigmaPlugboard {
     fn mutate(&mut self, input_char: char, _backwards: bool) -> char {
         match self.0.get(&input_char) {
-            Some(ch) => ch.clone(),
-            None => input_char
+            Some(ch) => *ch,
+            None => input_char,
         }
     }
 }
