@@ -61,10 +61,10 @@ fn main() {
 
     match cli_args.commands {
         EnigmaCommands::Encrypt { input_string } => {
-            encrypt(input_string, cli_args.rotors, cli_args.config)
+            encrypt(input_string.into_inner(), cli_args.rotors, cli_args.config)
         }
         EnigmaCommands::Decrypt { input_string } => {
-            encrypt(input_string, cli_args.rotors, cli_args.config)
+            encrypt(input_string.into_inner(), cli_args.rotors, cli_args.config)
         }
         EnigmaCommands::Rotors { detail } => list_rotors(cli_args.rotors, cli_args.config, detail),
     }

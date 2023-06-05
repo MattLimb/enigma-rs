@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
+use clap_stdin::MaybeStdin;
 
 #[derive(Parser, Debug)]
 #[command(name = "enigma-rs")]
@@ -30,10 +31,10 @@ pub struct EnigmaCli {
 #[derive(Debug, Subcommand)]
 pub enum EnigmaCommands {
     Encrypt {
-        input_string: String,
+        input_string: MaybeStdin<String>,
     },
     Decrypt {
-        input_string: String,
+        input_string: MaybeStdin<String>,
     },
     Rotors {
         #[arg(short, long)]
