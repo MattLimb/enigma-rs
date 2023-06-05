@@ -13,6 +13,7 @@ pub trait EnigmaTrait {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EnigmaMachine {
     pub rotors: Vec<String>,
+    offset: HashMap<String, u8>,
     plugboard: EnigmaPlugboard,
 
     // Right (0) - Middle (1) - Left (2) - Reflector (3)
@@ -59,7 +60,15 @@ impl EnigmaMachine {
         let mut rotor_slots: Vec<Rotor> = vec![];
 
         for rtr in self.rotors.clone() {
-            rotor_slots.push(all_rotors.clone().get_rotor(&rtr));
+            let mut rotor = all_rotors.clone().get_rotor(&rtr);
+
+            if let Some(offset) = self.offset.get(&rtr) {
+                for _int in 0..*offset {
+                    rotor.rotate();
+                }
+            }
+
+            rotor_slots.push(rotor);
             self.rotated.push(0);
         }
 
