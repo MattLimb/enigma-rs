@@ -39,7 +39,7 @@ $ cargo build [--release]
 - ~~Rotor Offsets~~
 - ~~stdin Support~~
 - Add Home directory support for config
-- Generate default config automatically
+- ~~Generate default config automatically~~
 - Add command-line utilities to show and modify configuration
 
 ## Example Usage
