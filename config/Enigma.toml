@@ -4,9 +4,6 @@ rotors = [
     "rotor_iii"
 ]
 
-[offset]
-rotor_i = 1
-
 [plugboard]
 a = "h"
 b = "n"
