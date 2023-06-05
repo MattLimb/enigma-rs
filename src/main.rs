@@ -20,6 +20,7 @@ fn encrypt(input_string: String, rotors: PathBuf, config: PathBuf) {
         '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~',
     ];
 
+
     for c in input_string.to_lowercase().chars() {
         if banned_chars.contains(&c) {
             output_string.push(c);

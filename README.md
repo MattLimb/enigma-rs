@@ -35,7 +35,7 @@ $ cargo build [--release]
 
 ## Planned Features
 
-- Variable Number Rotors (more or less than 3). Its currently locked at 3.
+- ~~Variable Number Rotors (more or less than 3). Its currently locked at 3.~~
 - Rotor Offsets
 - ~~stdin Support~~
 
