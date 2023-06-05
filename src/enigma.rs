@@ -96,16 +96,15 @@ impl EnigmaMachine {
 
     pub fn rotate(&mut self) {
         for (idx, rotor) in self.rotor_slots.iter_mut().enumerate() {
-            rotor.rotate();            
+            rotor.rotate();
             self.rotated[idx] += 1;
 
             match self.rotated[idx].cmp(&26) {
                 std::cmp::Ordering::Equal => self.rotated[idx] = 0,
-                _ => break
+                _ => break,
             }
         }
     }
-
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
