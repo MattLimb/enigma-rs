@@ -28,18 +28,24 @@ $ cd enigma-rs
 $ cargo run -- encrypt "Hello World!"
 ```
 
+4. Build Binary:
+```sh
+$ cargo build [--release]
+```
+
 ## Planned Features
 
 - Variable Number Rotors (more or less than 3). Its currently locked at 3.
 - Rotor Offsets
+- ~~stdin Support~~
 
 ## Example Usage
 
 ```
-$ cargo run -- help
+$ ./target/debug/enigma help
 A toy project to implement the Enigma Cipher in Rust.
 
-Usage: enigma.exe [OPTIONS] <COMMAND>
+Usage: enigma [OPTIONS] <COMMAND>
 
 Commands:
   encrypt
@@ -52,20 +58,16 @@ Options:
   -c, --config <FILENAME>  [default: config/Enigma.toml]
   -h, --help               Print help
   -V, --version            Print version
-```
 
-```
-$ cargo run -- --rotors config/Rotors.toml --config config/Enigma.toml encrypt "Hello World"
+$ ./target/debug/enigma --rotors config/Rotors.toml --config config/Enigma.toml encrypt "Hello World"
 gwxnw ybehj
-```
 
-```
-$ cargo run -- --rotors config/Rotors.toml --config config/Enigma.toml decrypt "gwxnw ybehj"
+$ ./target/debug/enigma decrypt "gwxnw ybehj"
 hello world
-```
 
-```
-$ cargo run -- rotors
+$ echo "Hello World" | ./enigma encrypt -
+
+$ ./target/debug/enigma rotors
 -------------------------------------------------------------------------------------------------------------------------------------------
 Rotor  : rotor_iii (in use)
 -------------------------------------------------------------------------------------------------------------------------------------------
