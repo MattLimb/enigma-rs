@@ -12,7 +12,7 @@ pub struct EnigmaCli {
         short,
         long,
         value_name = "FILENAME",
-        default_value = "config/Rotors.toml"
+        default_value = "__default__"
     )]
     pub rotors: PathBuf,
 
@@ -20,7 +20,7 @@ pub struct EnigmaCli {
         short,
         long,
         value_name = "FILENAME",
-        default_value = "config/Enigma.toml"
+        default_value = "__default__"
     )]
     pub config: PathBuf,
 
@@ -41,7 +41,7 @@ pub enum EnigmaCommands {
         detail: bool,
     },
     Default {
-        #[arg(value_name = "FOLDER", default_value = "./config/")]
+        #[arg(value_name = "FOLDER", default_value = "__default__")]
         folder: PathBuf,
     },
 }

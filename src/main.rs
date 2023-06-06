@@ -9,7 +9,31 @@ use clap::Parser;
 use cli::{EnigmaCli, EnigmaCommands};
 use enigma::EnigmaTrait;
 
-fn encrypt(input_string: String, rotors: PathBuf, config: PathBuf) {
+const DEFAULT_PATH: &'static str = "__default__";
+
+fn default_folder() -> PathBuf {
+    match home::home_dir() {
+        Some(mut dir) => {
+            dir.push("enigma");
+            dir
+        },
+        None => PathBuf::from("./config")
+    }
+}
+
+fn encrypt(input_string: String, mut rotors: PathBuf, mut config: PathBuf) {
+    let default = PathBuf::from(DEFAULT_PATH);
+
+    if rotors == default {
+        rotors = default_folder();
+        rotors.push("Rotors.toml");
+    }
+
+    if config == default {
+        config = default_folder();
+        config.push("Enigma.toml");
+    }
+
     let rotor_config = rotors::RotorsConfig::load(rotors);
     let mut enigma_config = enigma::EnigmaMachine::load(config);
     enigma_config.init(rotor_config);
@@ -32,7 +56,19 @@ fn encrypt(input_string: String, rotors: PathBuf, config: PathBuf) {
     println!("{}", output_string)
 }
 
-fn list_rotors(rotors: PathBuf, config: PathBuf, detail: bool) {
+fn list_rotors(mut rotors: PathBuf, mut config: PathBuf, detail: bool) {
+    let default = PathBuf::from(DEFAULT_PATH);
+
+    if rotors == default {
+        rotors = default_folder();
+        rotors.push("Rotors.toml");
+    }
+
+    if config == default {
+        config = default_folder();
+        config.push("Enigma.toml");
+    }
+
     let rotor_config = rotors::RotorsConfig::load(rotors);
     let mut enigma_config = enigma::EnigmaMachine::load(config);
     enigma_config.init(rotor_config.clone());
@@ -57,7 +93,11 @@ fn list_rotors(rotors: PathBuf, config: PathBuf, detail: bool) {
     }
 }
 
-fn write_defaults(folder: PathBuf) {
+fn write_defaults(mut folder: PathBuf) {
+    if folder == PathBuf::from(DEFAULT_PATH) {
+        folder = default_folder();
+    }
+
     defaults::write_default_rotors(folder.clone());
     println!("Written Rotors.toml");
 

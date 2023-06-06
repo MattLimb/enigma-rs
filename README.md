@@ -38,7 +38,7 @@ $ cargo build [--release]
 - ~~Variable Number Rotors (more or less than 3). Its currently locked at 3.~~
 - ~~Rotor Offsets~~
 - ~~stdin Support~~
-- Add Home directory support for config
+- ~~Add Home directory support for config~~
 - ~~Generate default config automatically~~
 - Add command-line utilities to show and modify configuration
 
